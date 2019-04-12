@@ -11,7 +11,6 @@
   <meta name="description" content="Social Media Mashup with Facebook Instagram Reddit Tumblr Meetup platform provides sport information.">
   <meta name="keywords" content="Social,Media,Mashup,Facebook,Instagram,Reddit,Tumblr,Meetup,sport,football,soccer,rugby">
 
-
   <style>
     .ssk-group {
       margin-bottom: 20px;
@@ -216,6 +215,38 @@
       )
     }
 	
+  function getFacebook() {
+    var accessToken = ""
+      $(function() {
+        var url = "https://graph.facebook.com/oauth/access_token?client_id=792777754429652&client_secret=bbadc7b1314b63ffac543701be485f70&grant_type=client_credentials"
+        $.get( url )
+        .done(function( data ) {
+          accessToken = data['access_token']
+          getPosts()
+        });
+      });
+
+      function getPosts(){
+        var posrUrl = "https://graph.facebook.com/100479901142882/feed?fields=permalink_url,picture,message,created_time&limit=20&access_token="+accessToken
+          $.get( posrUrl, function( data ) {
+            var articles = data.data
+            for (i = 0; i < articles.length; i++) { 
+              var date = articles[i].created_time
+              var content = {
+                name: articles[i].message,
+                link: articles[i].permalink_url,
+                local_date: `${new Date(date).getFullYear()}-${(new Date(date).getMonth())+1}-${new Date(date).getDate()}`,
+                local_time: `${new Date(date).getHours()}:${new Date(date).getMinutes()}`,
+                image: articles[i].picture
+              }
+              fillData(content, 'facebook')
+            }
+
+          });
+      }
+  }
+  getFacebook()
+
 	function getInstagram() {
       var keyword = "food";
       var url = new URL(location.href);
@@ -234,7 +265,7 @@
           var content = {
             name: articles[i].user.full_name,
             link: articles[i].images.thumbnail.url,
-            local_date: `${new Date(date).getFullYear()}-${new Date(date).getMonth()}-${new Date(date).getDate()}`,
+            local_date: `${new Date(date).getFullYear()}-${(new Date(date).getMonth())+1}-${new Date(date).getDate()}`,
             local_time: `${new Date(date).getHours()}:${new Date(date).getMinutes()}`,
             image: articles[i].images.standard_resolution.url
           }
@@ -269,7 +300,7 @@
         var content = {
           name: data[i].data.title,
           link: data[i].data.url,
-          local_date: `${new Date(date).getFullYear()}-${new Date(date).getMonth()}-${new Date(date).getDate()}`,
+          local_date: `${new Date(date).getFullYear()}-${(new Date(date).getMonth())+1}-${new Date(date).getDate()}`,
           local_time: `${new Date(date).getMinutes()}:${new Date(date).getSeconds()}`,
           image: data[i].data.thumbnail == 'self' ? null : data[i].data.thumbnail
         }
@@ -295,7 +326,7 @@
           var content = {
             name: articles[i].summary,
             link: articles[i].post_url,
-            local_date: `${new Date(date).getFullYear()}-${new Date(date).getMonth()}-${new Date(date).getDate()}`,
+            local_date: `${new Date(date).getFullYear()}-${(new Date(date).getMonth())+1}-${new Date(date).getDate()}`,
             local_time: `${new Date(date).getHours()}:${new Date(date).getMinutes()}`,
             image: articles[i].photos ? articles[i].photos[0]['original_size']['url'] : null
           }
