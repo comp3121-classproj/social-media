@@ -1,0 +1,378 @@
+<head>
+
+  <link href="https://fonts.googleapis.com/css?family=Raleway+Dots" rel="stylesheet" type="text/css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+  <script src="./dist/js/social-share-kit.js"></script>
+  <link rel="stylesheet" href="./dist/css/social-share-kit.css" type="text/css">
+
+  <meta name="title" content="Social Media Mashup">
+  <meta name="keywords" content="Social Media Mashup">
+
+
+  <style>
+    .ssk-group {
+      margin-bottom: 20px;
+    }
+    .footer {
+      background-color: #222;
+      height: 200px;
+      width: 100%;
+      color:#fff;
+    }
+    .footer .container {
+      padding-top: 80px;
+      padding-left: 30px;
+    }
+    a {
+      color: inherit;
+      /* blue colors for links too */
+      text-decoration: inherit;
+      /* no underline */
+    }
+
+    a:hover {
+      color: #77cc6d;
+    }
+
+
+
+    .social_media {
+      margin: 0px auto 0px 20px;
+    }
+    .test{
+      width: calc(33.333333%);
+      margin: 30px 0px;
+
+    }
+    .card {
+      display: block;
+      width: calc(33.333333% - 20px);
+      margin-bottom: 30px;
+      box-shadow: 0 0 2px 0 rgba(46, 62, 72, .12), 0 2px 4px 0 rgba(46, 62, 72, .12);
+    }
+
+    @media only screen and (max-width: 600px) {
+      .social_media {
+        margin: 0 20px;
+        max-width: 100%;
+      }
+
+      .test{
+        width: calc(100%);
+
+      }
+      .card {
+        display: block;
+        width: calc(100%);
+        box-shadow: 0 0 2px 0 rgba(46, 62, 72, .12), 0 2px 4px 0 rgba(46, 62, 72, .12);
+      }
+    }
+
+    .card .name {
+      font-size: 20px;
+      line-height: 26px;
+      padding: 20px 20px 0px 20px;
+      font-weight: bold;
+    }
+
+    .card .date {
+      padding: 20px;
+    }
+
+    img {
+      width: 100%
+    }
+
+    .hide {
+      display: none;
+    }
+
+    html,
+    body {
+      margin: 0;
+      font-family: 'Raleway Dots', sans-serif;
+    }
+
+    section {
+      background-color: #77cc6d;
+      padding-bottom: 40px;
+    }
+
+    section #services {
+      text-align: center;
+      transform: translatez(0);
+    }
+
+    section #services h2 {
+      padding: 80px 0px 40px;
+      color: #fff;
+      font-size: 2.4em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    section ul {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    section #services li {
+      width: 120px;
+      height: 140px;
+      display: inline-block;
+      margin: 20px;
+      list-style: none;
+    }
+
+    section #services li .widgets-container {
+      width: 120px;
+      height: 120px;
+      color: #74d4b3;
+      font-size: 3.4em;
+      text-align: center;
+      line-height: 120px;
+      background-color: #fff;
+      transition: all 0.5s ease;
+    }
+
+    section #services li .widgets {
+      color: #77cc6d;
+    }
+
+    section #services li div i {
+      line-height: 120px;
+      width: 120px;
+    }
+
+    section #services li div:hover {
+      transform: rotate(360deg);
+      border-radius: 100px;
+    }
+
+    section #services li span {
+      width: 120px;
+      height: 20px;
+      display: block;
+      padding: 15px 0px;
+      color: #fff;
+      text-transform: uppercase;
+      font-size: 1.2em;
+      text-align: center;
+    }
+
+    .credits a {
+      display: block;
+      text-align: center;
+      color: #74d4b3;
+      text-decoration: none;
+      font-size: 24px;
+      margin-top: 50px;
+      background: white;
+      padding: 20px;
+      max-width: 300px;
+    }
+  </style>
+
+  <script>
+    var gird;
+    $(document).ready(() => {
+      $(document).find(".card").css('display', 'none')
+      $(document).find(`.${location.hash.substring(1)}Card`).css('display', 'block')
+      setTimeout(() => {
+        gird = $('.social_media').isotope({
+          // options...
+          itemSelector: '.card',
+          masonry: {
+            columnWidth: '.test'
+        },
+        });
+      }, 1000)
+
+
+
+    });
+
+
+    window.onhashchange = (() => {
+      $(document).find(".card").css('display', 'none')
+      $(document).find(`.${location.hash.substring(1)}Card`).css('display', 'block')
+      $('.social_media').isotope()
+
+
+    });
+
+    function fillData(data, type) {
+      $(document).find(".social_media").append(
+        ` <div class="test"></div>
+          <a target="_blank" class="card ${type}Card" href="${data.link}">
+            ${ data.image ? `<img src=${data.image}>` : ''}
+            <div class="name">${data.name}</div>
+            <div class="date">Data: ${data.local_date} ${data.local_time}</div>
+          </a>`
+      )
+    }
+	
+	function getInstagram() {
+      var keyword = "food";
+      var url = new URL(location.href);
+      var s = url.searchParams.get("s");
+      if (s) {
+        keyword = s;
+      }
+      return fetch("https://api.instagram.com/v1/users/self/media/recent?access_token=977253122.cca8666.5169099e7eda4f3fac508979f730a5d6", {
+        mode: 'cors'
+      }).then(function(resp) {
+        return resp.json();
+      }).then(function(data) {
+        var articles = data.data;
+        for (i = 0; i < articles.length; i++) {
+          var date = articles[i].created_time * 1000
+          var content = {
+            name: articles[i].user.full_name,
+            link: articles[i].images.thumbnail.url,
+            local_date: `${new Date(date).getFullYear()}-${new Date(date).getMonth()}-${new Date(date).getDate()}`,
+            local_time: `${new Date(date).getHours()}:${new Date(date).getMinutes()}`,
+            image: articles[i].images.standard_resolution.url
+          }
+          fillData(content, 'instagram')
+        }
+      });
+    }
+    getInstagram()
+	
+    // meetup
+    function greet(myObj) {
+      data = myObj.data;
+      for (i = 0; i <= 20; i++) {
+        fillData(data[i], 'meetup')
+      }
+    }
+
+    // reddit
+    function getReddit() {
+      return fetch("https://www.reddit.com/search.json?q=it&sort=new&limit=20", {
+        mode: 'cors'
+      }).then((resp) => {
+        return resp.json();
+      }).then((data) => {
+        var articles = data.data.children;
+        return articles;
+      });
+    }
+    getReddit().then((data) => {
+      for (i = 0; i < data.length; i++) {
+        var date = data[i].data.created * 1000
+        var content = {
+          name: data[i].data.title,
+          link: data[i].data.url,
+          local_date: `${new Date(date).getFullYear()}-${new Date(date).getMonth()}-${new Date(date).getDate()}`,
+          local_time: `${new Date(date).getMinutes()}:${new Date(date).getSeconds()}`,
+          image: data[i].data.thumbnail == 'self' ? null : data[i].data.thumbnail
+        }
+        fillData(content, 'reddit')
+      }
+    });
+
+    function getTumblr() {
+      var keyword = "food";
+      var url = new URL(location.href);
+      var s = url.searchParams.get("s");
+      if (s) {
+        keyword = s;
+      }
+      return fetch("https://api.tumblr.com/v2/tagged?api_key=706B8gNPyBb3rusDjiwqE01d0KTO3UFE2y8DnbblCvm9cJbOQk&tag=it&limit=20&type=photo", {
+        mode: 'cors'
+      }).then(function(resp) {
+        return resp.json();
+      }).then(function(data) {
+        var articles = data.response;
+        for (i = 0; i < articles.length; i++) {
+          var date = articles[i].timestamp * 1000
+          var content = {
+            name: articles[i].summary,
+            link: articles[i].post_url,
+            local_date: `${new Date(date).getFullYear()}-${new Date(date).getMonth()}-${new Date(date).getDate()}`,
+            local_time: `${new Date(date).getHours()}:${new Date(date).getMinutes()}`,
+            image: articles[i].photos ? articles[i].photos[0]['original_size']['url'] : null
+          }
+          fillData(content, 'tumblr')
+        }
+      });
+    }
+    getTumblr()
+	
+
+
+  </script>
+</head>
+
+<body>
+  <section>
+    <ul id="services">
+      <h2>Social Media Mashup</h2>
+      <li>
+        <div class="widgets-container facebook">
+          <a class="widgets" href="#facebook">
+            <i class="fa fa-facebook" aria-hidden="true"></i>
+          </a>
+        </div>
+        <span>Facebook</span>
+      </li>
+      <li>
+        <div class="widgets-container instagram">
+          <a class="widgets" href="#instagram">
+          <i class="fa fa-instagram" aria-hidden="true"></i>
+        </a>
+        </div>
+        <span>Instagram</span>
+      </li>
+      <li>
+        <div class="widgets-container reddit">
+          <a class="widgets" href="#reddit">
+            <i class="fa fa-reddit" aria-hidden="true"></i>
+          </a>
+        </div>
+        <span>Reddit</span>
+      </li>
+      <li>
+        <div class="widgets-container tumblr">
+          <a class="widgets" href="#tumblr">
+            <i class="fa fa-tumblr" aria-hidden="true"></i>
+          </a>
+        </div>
+        <span>Tumblr</span>
+      </li>
+      <li>
+        <div class="widgets-container meetup">
+          <a class="widgets" href="#meetup">
+            <i class="fa fa-meetup" aria-hidden="true"></i>
+          </a>
+        </div>
+        <span>Meetup</span>
+      </li>
+    </ul>
+  </section>
+  <div class="social_media"></div>
+  <div class="footer">
+    <div class="container">
+      <div class="ssk-group">
+        <a href="" class="ssk ssk-facebook"></a>
+        <a href="" class="ssk ssk-instagram"></a>
+        <a href="" class="ssk ssk-google-plus"></a>
+        <a href="" class="ssk ssk-pinterest"></a>
+        <a href="" class="ssk ssk-linkedin"></a>
+    </div>
+      <div>Social Media Mashup</div>
+      <div>Copyright© COMP3121 Group ?</div>
+    </div>
+
+
+  </div>
+</body>
+<script type="text/javascript" src="https://api.meetup.com/find/events?access_token=caad0d7459b7d4e1ad2110d2c306c153&page=20&callback=greet"></script>
+<script type="text/javascript">
+    SocialShareKit.init({ forceInit: true });
+</script>
