@@ -286,7 +286,7 @@
 
     // reddit
     function getReddit() {
-      return fetch("https://www.reddit.com/search.json?q=it&sort=new&limit=20", {
+      return fetch("https://www.reddit.com/search.json?q=sports&sort=new&limit=20", {
         mode: 'cors'
       }).then((resp) => {
         return resp.json();
